@@ -1,21 +1,47 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"gochat/http"
+	"os"
 )
 
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, you've requested: %s\n", r.URL.Path)
+func main() {
+	m := NewMain()
+
+	// Execute the program.
+	if err := m.Run(); err != nil {
+		m.Close()
+		// Report error here
+		os.Exit(1)
+	}
 }
 
-func main() {
-	// Register a handler for /hello requests
-	http.HandleFunc("/hello", helloHandler)
+// Main represents the main application.
+type Main struct {
+	HTTPServer *http.Server
+}
 
-	// Start the server on port 8080
-	fmt.Println("Server is starting on port 8080")
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		fmt.Printf("Server error: %v", err)
+// NewMain returns a new instance of Main.
+func NewMain() *Main {
+	return &Main{
+		HTTPServer: http.NewServer(),
 	}
+}
+
+// Close gracefully shuts down the application.
+func (m *Main) Close() (err error) {
+	// Close the HTTP server.
+	if err = m.HTTPServer.Close(); err != nil {
+		return err
+	}
+	return nil
+}
+
+// Run runs the application.
+func (m *Main) Run() (err error) {
+	// Open the HTTP server.
+	if err = m.HTTPServer.Open(); err != nil {
+		return err
+	}
+	return nil
 }
