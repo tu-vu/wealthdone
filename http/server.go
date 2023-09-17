@@ -59,8 +59,10 @@ func (s *Server) Open() (err error) {
 	if s.ln, err = net.Listen("tcp", ":8080"); err != nil {
 		return err
 	}
-	// Begin serving requests.
-	return s.server.Serve(s.ln)
+	// Begin serving requests in a new goroutine.
+	go s.server.Serve(s.ln)
+
+	return nil
 }
 
 // Close gracefully shuts down the server.

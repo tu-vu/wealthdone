@@ -1,17 +1,34 @@
 package main
 
 import (
+	"context"
+	"fmt"
 	"gochat/http"
 	"os"
+	"os/signal"
 )
 
 func main() {
 	m := NewMain()
 
+	// Setup signal handlers.
+	ctx, cancel := context.WithCancel(context.Background())
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
+	go func() { <-c; cancel() }() // Release resources on interrupt signal (Ctrl+C).
+
 	// Execute the program.
-	if err := m.Run(); err != nil {
+	if err := m.Run(ctx); err != nil {
 		m.Close()
-		// Report error here
+		os.Exit(1)
+	}
+
+	// Wait for Ctrl+C.
+	<-ctx.Done()
+
+	// Clean up program.
+	if err := m.Close(); err != nil {
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
 }
@@ -38,7 +55,7 @@ func (m *Main) Close() (err error) {
 }
 
 // Run runs the application.
-func (m *Main) Run() (err error) {
+func (m *Main) Run(ctx context.Context) (err error) {
 	// Open the HTTP server.
 	if err = m.HTTPServer.Open(); err != nil {
 		return err
