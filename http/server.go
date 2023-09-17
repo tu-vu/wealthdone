@@ -13,7 +13,7 @@ import (
 const ShutdownTimeout = 5 * time.Second
 
 // Server represents an HTTP server. It is meant to wrap all HTTP functionality
-// used by the application so that dependent packages.
+// used by the application so that dependent packages don't have to import net/http.
 type Server struct {
 	ln     net.Listener
 	server *http.Server
