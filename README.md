@@ -17,3 +17,5 @@ Let's build something that's actually useful!
   - Flutter (frontend, cross-platform)
   - Firebase (database, auth, hosting)
   - AI/ML (OpenAI, TensorFlow, etc.)
+- Resources
+  - [Structuring Go apps](https://github.com/benbjohnson/wtf)
