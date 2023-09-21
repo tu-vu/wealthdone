@@ -36,7 +36,7 @@ func NewServer() *Server {
 	// Set up home page route.
 	s.router.HandleFunc("/", s.handleIndex).Methods("GET")
 
-	// Set up error handling route.
+	// Set up error handling routes.
 	s.router.NotFoundHandler = http.HandlerFunc(s.handleNotFound)
 
 	return s
