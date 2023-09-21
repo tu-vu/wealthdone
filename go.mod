@@ -1,4 +1,4 @@
-module gochat
+module wealthfront
 
 go 1.21
 

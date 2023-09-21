@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"gochat/http"
 	"os"
 	"os/signal"
+	"wealthfront/http"
 )
 
 func main() {
