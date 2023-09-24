@@ -36,6 +36,9 @@ func NewServer() *Server {
 	// Set up home page route.
 	s.router.HandleFunc("/", s.handleIndex).Methods("GET")
 
+	// Set up auth routes.
+	s.registerAuthRoutes(s.router.PathPrefix("/").Subrouter())
+
 	// Set up error handling routes.
 	s.router.NotFoundHandler = http.HandlerFunc(s.handleNotFound)
 
