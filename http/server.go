@@ -7,6 +7,7 @@ import (
 	"net"
 	"net/http"
 	"time"
+	fb "wealthfront/firebase"
 )
 
 // ShutdownTimeout is the time given for any outstanding requests to finish before server shutdown.
@@ -18,6 +19,8 @@ type Server struct {
 	ln     net.Listener
 	server *http.Server
 	router *mux.Router
+
+	AuthService *fb.AuthService
 }
 
 // NewServer returns a new instance of Server.
