@@ -4,6 +4,7 @@ import (
 	"context"
 	firebase "firebase.google.com/go/v4"
 	"fmt"
+	"github.com/pkg/errors"
 	"google.golang.org/api/option"
 	"os"
 	"os/signal"
@@ -24,7 +25,11 @@ func main() {
 	go func() { <-c; cancel() }() // Release resources on interrupt signal (Ctrl+C).
 
 	// Instantiate a new type to represent our application.
-	m := NewMain(ctx)
+	m, err := NewMain(ctx)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
 
 	// Execute the program.
 	if err := m.Run(ctx); err != nil {
@@ -49,15 +54,18 @@ type Main struct {
 }
 
 // NewMain returns a new instance of Main.
-func NewMain(ctx context.Context) *Main {
+func NewMain(ctx context.Context) (*Main, error) {
 	// Create a new firebase app.
 	opt := option.WithCredentialsFile(DefaultCredentialsPath)
-	fireApp, _ := firebase.NewApp(ctx, nil, opt)
+	fireApp, err := firebase.NewApp(ctx, nil, opt)
+	if err != nil {
+		return nil, errors.Errorf("failed to create Firebase app: %v", err)
+	}
 
 	return &Main{
 		HTTPServer: http.NewServer(),
 		FireApp:    fireApp,
-	}
+	}, nil
 }
 
 // Close gracefully shuts down the application.
