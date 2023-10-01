@@ -3,7 +3,7 @@ Let's build something that's actually useful!
 > Simplicity / Minimalism / Usability / Privacy / Security / Openness
 
 - Idea: Personal finance management app
-- Platform: iOS, might add other later
+- Platform: Mobile
 - Target audience: Everyone
 - P0 features
   - Add income/expense
@@ -14,7 +14,7 @@ Let's build something that's actually useful!
   - Data sharing (export/import)
 - Tech stack
   - Go (backend)
-  - Swift (going hardcore iOS)
+  - Flutter (frontend)
   - Firebase (database, auth, hosting)
   - AI/ML (OpenAI, TensorFlow, etc.)
 - Resources
